@@ -6,7 +6,7 @@
     <StackPanel>
         <ui:TitleBar Title="EventCalendar" />
         <ui:Card Margin="8">
-            <ui:Button Click="ChangeThemeEventHandler" x:Name="ThemeButton" Content="Szeeex" Icon="{ui:SymbolIcon Fluent24}" />
+            <ui:Button Click="ChangeThemeEventHandler" x:Name="ThemeButton" Content="System" Icon="{ui:SymbolIcon Fluent24}" />
         </ui:Card>
     </StackPanel>
 </ui:FluentWindow>
