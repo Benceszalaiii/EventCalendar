@@ -6,6 +6,7 @@ using EventCalendar.Views.Pages;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Wpf.Ui;
+using Wpf.Ui.DependencyInjection;
 
 namespace EventCalendar;
 
@@ -25,7 +26,8 @@ public partial class App : Application
         var services = new ServiceCollection();
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<MainView>();
-        
+        services.AddNavigationViewPageProvider();
+
         _serviceProvider = services.BuildServiceProvider();
         var mainView = _serviceProvider.GetRequiredService<MainView>();
         mainView.Show();

@@ -1,7 +1,10 @@
-﻿using System.Windows.Media;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using EventCalendar.Views.Pages;
 using Wpf.Ui.Appearance;
+using Wpf.Ui.Controls;
 
 namespace EventCalendar.ViewModels;
 
@@ -12,6 +15,9 @@ public partial class MainViewModel : ViewModelBase
 
     [ObservableProperty] 
     private string _currentThemeText = "System";
+    
+    [ObservableProperty]
+    private ICollection<object> _menuItems = new ObservableCollection<object>();
     
     [RelayCommand]
     private void ToggleTheme()
@@ -29,12 +35,19 @@ public partial class MainViewModel : ViewModelBase
     
     public MainViewModel()
     {
+        
+        // Theme config
         CurrentTheme = ApplicationTheme.Dark;
         CurrentThemeText = "🌙 Dark";
         ApplicationThemeManager.Apply(CurrentTheme);
-    
-        // Subscribe to system theme changes
         ApplicationThemeManager.Changed += OnThemeChanged;
+        
+        // WPF-UI navigation
+        MenuItems = new ObservableCollection<object>
+        {
+            new NavigationViewItem("Home", SymbolRegular.Home24, typeof(DashboardPage)),
+            new NavigationViewItem("Settings", SymbolRegular.Settings24, typeof(SettingsPage))
+        };
     }
     
     private void OnThemeChanged(ApplicationTheme currentTheme, Color systemAccent)

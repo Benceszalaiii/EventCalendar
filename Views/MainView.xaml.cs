@@ -9,6 +9,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using EventCalendar.ViewModels;
+using EventCalendar.Views.Pages;
+using Wpf.Ui;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 
@@ -24,6 +26,12 @@ public partial class MainView : FluentWindow
 
         InitializeComponent();
         DataContext = viewModel;
+        Loaded += (_, _) => 
+        {
+            // Navigate to your landing page
+            RootNavigation.Navigate(typeof(DashboardPage));
+        };
+
     }
     
 }

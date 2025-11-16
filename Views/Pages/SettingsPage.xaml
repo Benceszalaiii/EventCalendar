@@ -8,6 +8,8 @@
         mc:Ignorable="d"
         Title="Settings" Height="600" Width="1200">
     <Grid>
-        
+        <ui:Card>
+            <ui:TextBox Text="Settings page"></ui:TextBox>
+        </ui:Card>
     </Grid>
 </Page>
