@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Security.Cryptography;
 using System.Text;
@@ -56,8 +57,10 @@ public class MainModel
         }
 
         Console.Write(deviceId);
+
         HttpClient client = new HttpClient();
         client.BaseAddress = new Uri("http://localhost:3000");
+        client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
         var res = client.GetAsync($"authentication/connect/initial?device={deviceId}").Result.Content
             .ReadFromJsonAsync<Dictionary<string, string>>().Result;
         if (res != null && res.TryGetValue("requestId", out var requestId))
@@ -69,9 +72,10 @@ public class MainModel
                 UseShellExecute = true
             });
 
-            int counter = 100; 
+            int counter = 100;
             while (counter > 0)
             {
+                
                 var stateRes = client.GetAsync($"authentication/connect/state?id={requestId}&device={deviceId}")
                     .Result.Content.ReadFromJsonAsync<Dictionary<string, string>>().Result;
                 if (stateRes != null && stateRes.ContainsKey("token"))
@@ -79,7 +83,7 @@ public class MainModel
                     
                     this.token = stateRes["token"];
                     Console.WriteLine($"Token received: {this.token}");
-                    SaveToken();
+                    // SaveToken();
                     break;
                 }
                 else
