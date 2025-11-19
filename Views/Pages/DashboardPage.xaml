@@ -8,8 +8,8 @@
         mc:Ignorable="d"
         Title="DashboardPage" Height="600" Width="1200">
     <Grid>
-        <ui:Card>
-            <ui:TextBox Text="Dashboard page"></ui:TextBox>
+        <ui:Card HorizontalAlignment="Left" BorderThickness="0" Margin="20 0 0 0" Background="Transparent" VerticalAlignment="Top">
+            <ui:TextBlock Text="Dashboard"></ui:TextBlock>
         </ui:Card>
     </Grid>
 </Page>

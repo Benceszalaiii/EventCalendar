@@ -13,37 +13,16 @@ public partial class MainViewModel : ViewModelBase
 {
     public MainModel model = new MainModel();
     
-    [ObservableProperty]
-    private ApplicationTheme _currentTheme;
 
-    [ObservableProperty] 
-    private string _currentThemeText = "System";
-    
     [ObservableProperty]
     private ICollection<object> _menuItems = new ObservableCollection<object>();
     
-    [RelayCommand]
-    private void ToggleTheme()
-    {
-        // Use the generated property (CurrentTheme), not the backing field (_currentTheme)
-        CurrentTheme = CurrentTheme == ApplicationTheme.Light
-            ? ApplicationTheme.Dark
-            : ApplicationTheme.Light;
-            
-        // Use the generated property (CurrentThemeText), not the backing field (currentThemeText)
-        CurrentThemeText = CurrentTheme == ApplicationTheme.Dark ? "🌙 Dark" : "☀️ Light";
-        
-        ApplicationThemeManager.Apply(CurrentTheme);
-    }
+
     
     public MainViewModel()
     {
         
-        // Theme config
-        CurrentTheme = ApplicationTheme.Dark;
-        CurrentThemeText = "🌙 Dark";
-        ApplicationThemeManager.Apply(CurrentTheme);
-        ApplicationThemeManager.Changed += OnThemeChanged;
+        
         
         // WPF-UI navigation
         MenuItems = new ObservableCollection<object>
@@ -53,10 +32,5 @@ public partial class MainViewModel : ViewModelBase
         };
     }
     
-    private void OnThemeChanged(ApplicationTheme currentTheme, Color systemAccent)
-    {
-        // Use the generated properties, not the backing fields
-        CurrentTheme = currentTheme;
-        CurrentThemeText = currentTheme == ApplicationTheme.Dark ? "🌙 Dark" : "☀️ Light";
-    }
+
 }

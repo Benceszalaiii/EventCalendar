@@ -22,7 +22,7 @@ public class MainModel
 
     public MainModel()
     {
-        Login();
+        // Login();
     }
 
     private string GetTokenFromSystem()
