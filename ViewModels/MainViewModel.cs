@@ -2,6 +2,7 @@
 using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using EventCalendar.Models;
 using EventCalendar.Views.Pages;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
@@ -10,6 +11,8 @@ namespace EventCalendar.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
+    public MainModel model = new MainModel();
+    
     [ObservableProperty]
     private ApplicationTheme _currentTheme;
 

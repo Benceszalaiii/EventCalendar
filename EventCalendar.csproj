@@ -6,6 +6,8 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UseWPF>true</UseWPF>
+        <Company>Bence Szalai</Company>
+        <UserSecretsId>9b4e4187-0e7b-492e-ad33-81ae79aca6a0</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
