@@ -8,10 +8,15 @@
         <UseWPF>true</UseWPF>
         <Company>Bence Szalai</Company>
         <UserSecretsId>9b4e4187-0e7b-492e-ad33-81ae79aca6a0</UserSecretsId>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
       <None Remove="Fonts\SfPro.OTF" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="icon.ico" />
     </ItemGroup>
 
     <ItemGroup>
@@ -20,10 +25,6 @@
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
       <PackageReference Include="WPF-UI" Version="4.0.3" />
       <PackageReference Include="WPF-UI.DependencyInjection" Version="4.0.3" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Resource Include="Fonts\SfPro.OTF" />
     </ItemGroup>
 
 </Project>
