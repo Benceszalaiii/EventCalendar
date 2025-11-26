@@ -33,9 +33,5 @@ public partial class SettingsViewModel: ViewModelBase
         ApplicationThemeManager.Apply(CurrentTheme);
     }
     
-    private void OnThemeChanged(ApplicationTheme currentTheme, Color systemAccent)
-    {
-        CurrentTheme = currentTheme;
-        CurrentThemeText = currentTheme == ApplicationTheme.Dark ? "Dark" : "Light";
-    }
+
 }

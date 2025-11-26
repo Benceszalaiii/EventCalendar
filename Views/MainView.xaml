@@ -11,14 +11,14 @@
             MenuItemsSource="{Binding MenuItems}"
             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
             <ui:NavigationView.MenuItems>
-                <!-- <ui:NavigationViewItem -->
-                <!--     Content="Home" -->
-                <!--     Icon="{ui:SymbolIcon Home24}" -->
-                <!--     TargetPageType="{x:Type pages:DashboardPage}" /> -->
-                <!-- <ui:NavigationViewItem -->
-                <!--     Content="Settings" -->
-                <!--     Icon="{ui:SymbolIcon Settings24}" -->
-                <!--     TargetPageType="{x:Type pages:SettingsPage}" /> -->
+                <ui:NavigationViewItem
+                    Content="Home"
+                    Icon="{ui:SymbolIcon Home24}"
+                    TargetPageType="{x:Type pages:DashboardPage}" />
+                <ui:NavigationViewItem
+                    Content="Settings"
+                    Icon="{ui:SymbolIcon Settings24}"
+                    TargetPageType="{x:Type pages:SettingsPage}" />
             </ui:NavigationView.MenuItems>
         </ui:NavigationView>
     </StackPanel>

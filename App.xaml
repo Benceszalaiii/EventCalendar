@@ -10,7 +10,9 @@
                 <ui:ThemesDictionary Theme="Dark" />
                 <ui:ControlsDictionary />
             </ResourceDictionary.MergedDictionaries>
+            <FontFamily x:Key="FontFamily">/Fonts/#TikTok Sans 36pt Light</FontFamily>
         </ResourceDictionary>
+        
     </Application.Resources>
     
 </Application>

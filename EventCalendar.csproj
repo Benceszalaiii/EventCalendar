@@ -17,6 +17,10 @@
 
     <ItemGroup>
       <Content Include="icon.ico" />
+      <None Remove="Fonts\TikTokSans.ttf" />
+      <Content Include="Fonts\TikTokSans.ttf">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>

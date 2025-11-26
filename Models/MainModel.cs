@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Security.Cryptography;
 using System.Text;
+using EventCalendar.Models.Main;
 using Microsoft.Win32;
 
 namespace EventCalendar.Models;
@@ -14,6 +15,9 @@ namespace EventCalendar.Models;
 public class MainModel
 {
     private string token;
+    private HttpClient client;
+    private User user;
+    private string DeviceId;
 
     public string Token
     {
@@ -22,7 +26,11 @@ public class MainModel
 
     public MainModel()
     {
+        client = new HttpClient();
+        client.BaseAddress = new Uri("http://localhost:3000");
+        DeviceId = GetDeviceId();
         // Login();
+        user = User.GetUser(client, DeviceId);
     }
 
     private string GetTokenFromSystem()
@@ -42,10 +50,9 @@ public class MainModel
         }
     }
 
-    public void Login()
+    private string GetDeviceId()
     {
         string deviceId;
-        // Login to api server and get token
         if (Registry.GetValue(@"HKEY_CURRENT_USER\Software\EventCalendar", "device_id", null) == null)
         {
             deviceId = Guid.NewGuid().ToString();
@@ -56,67 +63,66 @@ public class MainModel
             deviceId = Registry.GetValue(@"HKEY_CURRENT_USER\Software\EventCalendar", "device_id", null).ToString();
         }
 
-        Console.Write(deviceId);
+        return deviceId;
+    }
 
-        HttpClient client = new HttpClient();
+    public void Login()
+    {
+        // Login to api server and get token
+        Console.Write(DeviceId);
         client.BaseAddress = new Uri("http://localhost:3000");
         client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
-        var res = client.GetAsync($"authentication/connect/initial?device={deviceId}").Result.Content
+        var res = client.GetAsync($"authentication/connect/initial?device={DeviceId}").Result.Content
             .ReadFromJsonAsync<Dictionary<string, string>>().Result;
         if (res != null && res.TryGetValue("requestId", out var requestId))
         {
             Console.WriteLine($"Request ID: {requestId}");
             Process.Start(new ProcessStartInfo
             {
-                FileName = $"{client.BaseAddress.AbsoluteUri}/authentication?id={requestId}&device={deviceId}",
+                FileName = $"{client.BaseAddress.AbsoluteUri}/authentication?id={requestId}&device={DeviceId}",
                 UseShellExecute = true
             });
-
             int counter = 100;
             while (counter > 0)
             {
-                
-                var stateRes = client.GetAsync($"authentication/connect/state?id={requestId}&device={deviceId}")
-                    .Result.Content.ReadFromJsonAsync<Dictionary<string, string>>().Result;
+                var stateRes = client.GetAsync($"authentication/connect/state?id={requestId}&device={DeviceId}").Result
+                    .Content.ReadFromJsonAsync<Dictionary<string, string>>().Result;
                 if (stateRes != null && stateRes.ContainsKey("token"))
                 {
-                    
                     this.token = stateRes["token"];
                     Console.WriteLine($"Token received: {this.token}");
-                    // SaveToken();
+                    SaveToken();
                     break;
                 }
-                else
-                {
-                    Console.WriteLine($"{100-counter}. Polling...");
-                }
 
+                Console.WriteLine($"{100 - counter}. Polling...");
                 Thread.Sleep(3000);
                 counter--;
             }
+
             Console.WriteLine("Polling ended.");
         }
     }
 
     private void SaveToken()
+    {
+        string filePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        string appFolder = Path.Combine(filePath, "EventCalendar");
+        string tokenFile = Path.Combine(appFolder, "token.dat");
+        using (FileStream fs = new FileStream(tokenFile, FileMode.Open))
         {
-            string filePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string appFolder = Path.Combine(filePath, "EventCalendar");
-            string tokenFile = Path.Combine(appFolder, "token.dat");
-            using (FileStream fs = new FileStream(tokenFile, FileMode.Open))
+            using (StreamWriter sw = new StreamWriter(fs))
             {
-                using (StreamWriter sw = new StreamWriter(fs))
-                {
-                    byte[] tokenEncrypted = ProtectedData.Protect(Encoding.Unicode.GetBytes(this.token), null,
-                        DataProtectionScope.CurrentUser);
-                    sw.Write(Convert.ToBase64String(tokenEncrypted));
-                }
+                byte[] tokenEncrypted = ProtectedData.Protect(Encoding.Unicode.GetBytes(this.token), null,
+                    DataProtectionScope.CurrentUser);
+                sw.Write(Convert.ToBase64String(tokenEncrypted));
             }
         }
-
-        private string RetrieveToken()
-        {
-            // Retrieve from api server
-            return "";
-        }
     }
+
+    private string RetrieveToken()
+    {
+        // Retrieve from api server
+        return "";
+    }
+}

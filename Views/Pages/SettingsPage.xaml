@@ -17,7 +17,7 @@
             <ui:TextBlock Text="Settings"></ui:TextBlock>
         </ui:Card>
         <ui:Card>
-            <ui:Button Click="{Binding ToggleThemeHandlerCommand}" x:Name="ThemeButton" Icon="{ui:SymbolIcon DarkTheme24}" />
+            <ui:Button Command="{Binding ToggleThemeHandlerCommand}" x:Name="ThemeButton" Icon="{ui:SymbolIcon DarkTheme24}" />
         </ui:Card>
     </Grid>
 </Page>
