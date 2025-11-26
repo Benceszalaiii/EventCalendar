@@ -1,6 +1,7 @@
 ﻿using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using EventCalendar.Interfaces;
 using Wpf.Ui.Appearance;
 
 namespace EventCalendar.ViewModels;
@@ -15,8 +16,6 @@ public partial class SettingsViewModel: ViewModelBase
 
     public SettingsViewModel()
     {
-        // Theme config
-        ApplicationThemeManager.ApplySystemTheme();
     }
     
     

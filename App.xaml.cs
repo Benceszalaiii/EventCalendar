@@ -1,5 +1,7 @@
 ﻿
 using System.Windows;
+using EventCalendar.Interfaces;
+using EventCalendar.Models;
 using EventCalendar.ViewModels;
 using EventCalendar.Views;
 using EventCalendar.Views.Pages;
@@ -48,10 +50,13 @@ public partial class App : Application
                 // Main window
                 services.AddScoped<MainView>();
                 services.AddScoped<MainViewModel>();
+                
+                
 
                 // Services
                 services.AddSingleton<INavigationService, NavigationService>();
-
+                
+                
                 // Pages and ViewModels
                 services.AddScoped<DashboardPage>();
                 services.AddScoped<DashboardViewModel>();

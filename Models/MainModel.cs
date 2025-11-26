@@ -7,47 +7,75 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Security.Cryptography;
 using System.Text;
+using System.Windows;
 using EventCalendar.Models.Main;
 using Microsoft.Win32;
+using Wpf.Ui.Controls;
+using MessageBox = System.Windows.MessageBox;
+using MessageBoxResult = System.Windows.MessageBoxResult;
 
 namespace EventCalendar.Models;
 
 public class MainModel
 {
-    private string token;
-    private HttpClient client;
-    private User user;
-    private string DeviceId;
+    private string? _token;
+    public HttpClient Client;
+    public User? User;
+    public string DeviceId;
 
-    public string Token
+    public string? Token
     {
-        get { return token; }
+        get { return _token; }
     }
 
     public MainModel()
     {
-        client = new HttpClient();
-        client.BaseAddress = new Uri("http://localhost:3000");
-        DeviceId = GetDeviceId();
-        // Login();
-        user = User.GetUser(client, DeviceId);
+        LoginHandler();
+        App.Current.Properties["Username"] = User.Name;
     }
 
-    private string GetTokenFromSystem()
+
+    private void LoginHandler()
     {
-        string filePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        string appFolder = Path.Combine(filePath, "EventCalendar");
-        string tokenFile = Path.Combine(appFolder, "token.dat");
-        System.IO.Directory.CreateDirectory(appFolder);
-        using (FileStream fs = new FileStream(tokenFile, FileMode.OpenOrCreate))
+        Client = new HttpClient();
+        Client.BaseAddress = new Uri("http://localhost:3000");
+        DeviceId = GetDeviceId();
+        _token = GetTokenFromSystem();
+        if (_token != null)
         {
-            using (StreamReader sr = new StreamReader(fs))
+            try
             {
-                byte[] tokenEncrypted = Encoding.Unicode.GetBytes(sr.ReadToEnd());
-                return Encoding.UTF8.GetString(ProtectedData.Unprotect(tokenEncrypted, null,
-                    DataProtectionScope.CurrentUser));
+                User = new User(this);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("No user found. Please log in.", "Login Required", System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Information, MessageBoxResult.Cancel, MessageBoxOptions.ServiceNotification);
+                User = null;
+                Console.WriteLine($"Error fetching user data: {e.Message}");
             }
         }
+        
+        if (User == null)
+        {
+            Console.WriteLine("No valid token found. Please log in.");
+            Login();
+            try
+            {
+                User = new User(this);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error fetching user data: {e.Message}");
+            }
+            User = new User(this);
+        }
+        
+    }
+    
+    private string? GetTokenFromSystem()
+    {
+        return Registry.GetValue(@"HKEY_CURRENT_USER\Software\EventCalendar", "token", "").ToString();
     }
 
     private string GetDeviceId()
@@ -70,27 +98,26 @@ public class MainModel
     {
         // Login to api server and get token
         Console.Write(DeviceId);
-        client.BaseAddress = new Uri("http://localhost:3000");
-        client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
-        var res = client.GetAsync($"authentication/connect/initial?device={DeviceId}").Result.Content
+        Client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
+        var res = Client.GetAsync($"authentication/connect/initial?device={DeviceId}").Result.Content
             .ReadFromJsonAsync<Dictionary<string, string>>().Result;
         if (res != null && res.TryGetValue("requestId", out var requestId))
         {
             Console.WriteLine($"Request ID: {requestId}");
             Process.Start(new ProcessStartInfo
             {
-                FileName = $"{client.BaseAddress.AbsoluteUri}/authentication?id={requestId}&device={DeviceId}",
+                FileName = $"{Client.BaseAddress.AbsoluteUri}/authentication?id={requestId}&device={DeviceId}",
                 UseShellExecute = true
             });
             int counter = 100;
             while (counter > 0)
             {
-                var stateRes = client.GetAsync($"authentication/connect/state?id={requestId}&device={DeviceId}").Result
+                var stateRes = Client.GetAsync($"authentication/connect/state?id={requestId}&device={DeviceId}").Result
                     .Content.ReadFromJsonAsync<Dictionary<string, string>>().Result;
                 if (stateRes != null && stateRes.ContainsKey("token"))
                 {
-                    this.token = stateRes["token"];
-                    Console.WriteLine($"Token received: {this.token}");
+                    this._token = stateRes["token"];
+                    Console.WriteLine($"Token received: {this._token}");
                     SaveToken();
                     break;
                 }
@@ -106,23 +133,13 @@ public class MainModel
 
     private void SaveToken()
     {
-        string filePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        string appFolder = Path.Combine(filePath, "EventCalendar");
-        string tokenFile = Path.Combine(appFolder, "token.dat");
-        using (FileStream fs = new FileStream(tokenFile, FileMode.Open))
+        if (Registry.GetValue(@"HKEY_CURRENT_USER\Software\EventCalendar", "token", null) == null)
         {
-            using (StreamWriter sw = new StreamWriter(fs))
-            {
-                byte[] tokenEncrypted = ProtectedData.Protect(Encoding.Unicode.GetBytes(this.token), null,
-                    DataProtectionScope.CurrentUser);
-                sw.Write(Convert.ToBase64String(tokenEncrypted));
-            }
+            Registry.SetValue(@"HKEY_CURRENT_USER\Software\EventCalendar", "token", this._token);
         }
-    }
-
-    private string RetrieveToken()
-    {
-        // Retrieve from api server
-        return "";
+        else
+        {
+            _token = Registry.GetValue(@"HKEY_CURRENT_USER\Software\EventCalendar", "token", null).ToString();
+        }
     }
 }
