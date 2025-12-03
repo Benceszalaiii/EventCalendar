@@ -15,7 +15,7 @@ namespace EventCalendar.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
-    public MainModel model;
+    public MainModel Model;
     
     
     [ObservableProperty]
@@ -24,7 +24,7 @@ public partial class MainViewModel : ViewModelBase
 
     public MainViewModel()
     {
-        model = new MainModel();
+        Model = new MainModel();
         
         // WPF-UI navigation
         MenuItems = new ObservableCollection<object>

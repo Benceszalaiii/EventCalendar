@@ -15,5 +15,11 @@
         <ui:Card HorizontalAlignment="Left" BorderThickness="0" Margin="20 0 0 0" Background="Transparent" VerticalAlignment="Top">
             <ui:TextBlock FontSize="32" Text="{Binding WelcomeMessage}"></ui:TextBlock>
         </ui:Card>
+        <ui:Card Background="Transparent">
+            <StackPanel>
+            <ui:TextBlock FontSize="24" FontWeight="DemiBold" Margin="10" Text="Upcoming events"></ui:TextBlock>
+                
+                </StackPanel>
+        </ui:Card>
     </Grid>
 </Page>

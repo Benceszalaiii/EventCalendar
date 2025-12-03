@@ -9,6 +9,7 @@
         </ui:TitleBar>
         <ui:NavigationView
             x:Name="RootNavigation"
+            PaneDisplayMode="Left"
             xmlns:pages="clr-namespace:EventCalendar.Views.Pages"
             MenuItemsSource="{Binding MenuItems}"
             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
