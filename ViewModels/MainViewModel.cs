@@ -30,7 +30,9 @@ public partial class MainViewModel : ViewModelBase
         MenuItems = new ObservableCollection<object>
         {
             new NavigationViewItem("Dashboard", SymbolRegular.Home24, typeof(DashboardPage)),
-            new NavigationViewItem("Settings", SymbolRegular.Settings24, typeof(SettingsPage))
+            new NavigationViewItem("Settings", SymbolRegular.Settings24, typeof(SettingsPage)),
+            new NavigationViewItem("Create", SymbolRegular.Add24, typeof(CreatePage))
+            
         };
         
     }

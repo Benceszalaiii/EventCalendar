@@ -62,6 +62,8 @@ public partial class App : Application
                 services.AddScoped<DashboardViewModel>();
                 services.AddScoped<SettingsPage>();
                 services.AddScoped<SettingsViewModel>();
+                services.AddScoped<CreatePage>();
+                services.AddScoped<CreateViewModel>();
             })
             .Build();
     }
