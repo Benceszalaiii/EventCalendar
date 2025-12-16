@@ -28,7 +28,7 @@ public class User
 
         Name = data["Name"];
         Image = data["Image"];
-        Console.WriteLine($"Name: {Name}, Image: {Image}");
+        Console.WriteLine($"Welcome {Name}");
     }
 
     private static Dictionary<string, string>? FetchData(HttpClient client, string deviceId, string token)
