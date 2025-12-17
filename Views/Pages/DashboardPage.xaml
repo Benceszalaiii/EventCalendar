@@ -25,17 +25,8 @@
                     <ui:ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
-                            <ui:TextBlock FontSize="24" FontWeight="Bold" Text="{Binding Date}"></ui:TextBlock>
-                            <ui:ListView ItemsSource="{Binding}">
-                                <ui:ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel>
-                                        <ui:TextBlock Text="{Binding EventTitle}" FontWeight="DemiBold" FontSize="16"></ui:TextBlock>
-                                    <ui:TextBlock Text="{Binding EventDescription}" FontSize="12"></ui:TextBlock>
-                                        </StackPanel>
-                                </DataTemplate>
-                                </ui:ListView.ItemTemplate>
-                            </ui:ListView>
+                                <TextBlock FontSize="18" FontWeight="DemiBold" Text="{Binding TitleBar}"></TextBlock>
+                            <TextBlock FontSize="12" Text="{Binding EventDescription}"></TextBlock>
                             </StackPanel>
                         </DataTemplate>
                     </ui:ListView.ItemTemplate>

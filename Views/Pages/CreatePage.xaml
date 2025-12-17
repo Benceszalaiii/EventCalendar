@@ -3,10 +3,45 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:EventCalendar.Views.Pages"
+      xmlns:local="clr-namespace:EventCalendar.Views.Pages" xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       mc:Ignorable="d"
+      xmlns:vm="clr-namespace:EventCalendar.ViewModels"
       Title="CreatePage" Height="450" Width="800">
+    <Page.DataContext>
+        <vm:CreateViewModel>
+    </vm:CreateViewModel>
+    </Page.DataContext>
     <Grid>
-        
+        <ui:Card HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent">
+            <ui:TextBlock FontSize="32" Text="{Binding HeaderMessage}"></ui:TextBlock>
+        </ui:Card>
+        <ui:Card Background="Transparent">
+            <Grid>
+                <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <ui:TextBlock Grid.Row="1" Text="Event title: "></ui:TextBlock>
+                <ui:TextBox Grid.Row="1" Grid.Column="1" Width="250" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="35"  x:Name="EventTitleTX"></ui:TextBox>
+            <ui:TextBlock Grid.Row="2" Grid.Column="0"  Text="Event description: "></ui:TextBlock>
+                <ui:TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Width="350" HorizontalAlignment="Left" x:Name="EventDescriptionTX"></ui:TextBox>
+            <ui:TextBlock Grid.Row="3" Grid.Column="0" Text="Event date: "></ui:TextBlock>
+                <ui:CalendarDatePicker Date="{Binding Date, UpdateSourceTrigger=PropertyChanged}" Width="150" Grid.Row="3" Grid.Column="2"></ui:CalendarDatePicker>
+            <ui:TextBlock Grid.Row="4" Grid.Column="0" Text="Event status: "></ui:TextBlock>
+                <ComboBox Grid.Row="4" ItemsSource="{Binding StatusValues}"
+  Text="Status" Grid.Column="1" Width="150" HorizontalAlignment="Left">
+            
+            </ComboBox>
+            <ui:Button Command="{Binding SaveCommand}" Grid.Row="5" Grid.Column="1" Content="Create event"></ui:Button>
+        </Grid>
+        </ui:Card>
     </Grid>
 </Page>

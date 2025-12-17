@@ -17,7 +17,10 @@
             <ui:TextBlock Text="Settings"></ui:TextBlock>
         </ui:Card>
         <ui:Card>
-            <ui:Button Command="{Binding ToggleThemeHandlerCommand}" x:Name="ThemeButton" Icon="{ui:SymbolIcon DarkTheme24}" />
+            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                <ui:TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="16" FontWeight="DemiBold" Margin="25 0" Text="Change theme: "></ui:TextBlock>
+                <ui:Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="25 0" Command="{Binding ToggleThemeHandlerCommand}" x:Name="ThemeButton" Icon="{ui:SymbolIcon DarkTheme24}" />
+            </StackPanel>
         </ui:Card>
     </Grid>
 </Page>

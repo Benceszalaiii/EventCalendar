@@ -11,6 +11,8 @@ public class DateEvent(
     public string EventTitle { get; set; } = title;
     public string EventDescription { get; set; } = description;
 
+    public string TitleBar { get; set; } = $"{date.ToLocalTime()} - {title} - {status}";
+
     public enum EventStatus
     {
         Upcoming,
