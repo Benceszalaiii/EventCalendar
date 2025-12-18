@@ -1,6 +1,8 @@
-﻿using System;
+﻿using EventCalendar.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,8 +14,14 @@ public class CreateModel
     public string FormEventDescription = string.Empty;
     public DateTime FormDate = DateTime.UtcNow;
 
+    private MainModel main;
     public CreateModel()
     {
+        main = new MainModel();
+    }
+    public bool uploadEvent(DateEvent dateEvent)
+    {
 
+        return main.Client.PostAsJsonAsync<DateEvent>("/api/events", dateEvent).Result.IsSuccessStatusCode;
     }
 }

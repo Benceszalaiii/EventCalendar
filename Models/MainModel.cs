@@ -38,7 +38,7 @@ public class MainModel
     private void LoginHandler()
     {
         Client = new HttpClient();
-        Client.BaseAddress = new Uri("https://event.khrone.tech");
+        Client.BaseAddress = new Uri("http://localhost:3000");
         DeviceId = GetDeviceId();
         _token = GetTokenFromSystem();
         if (_token != null)
